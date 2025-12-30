@@ -1,6 +1,8 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { colors } from '../../constants/theme';
 import { useTranslation } from '../../store/languageStore';
 
 export default function TabLayout() {
@@ -9,30 +11,34 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#6c5ce7',
-        tabBarInactiveTintColor: '#888',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          backgroundColor: '#1a1a2e',
-          borderTopColor: '#2a2a4e',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          borderTopColor: colors.border,
+          borderTopWidth: 1,
+          height: 70,
+          paddingBottom: 10,
+          paddingTop: 10,
         },
         headerStyle: {
-          backgroundColor: '#0a0a1a',
+          backgroundColor: colors.background,
         },
-        headerTintColor: '#fff',
+        headerTintColor: colors.text,
         headerTitleStyle: {
           fontWeight: '600',
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: t('tab_dreams'),
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="moon-o" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View style={focused ? styles.activeIconContainer : undefined}>
+              <FontAwesome name="moon-o" size={24} color={color} />
+            </View>
           ),
         }}
       />
@@ -41,7 +47,9 @@ export default function TabLayout() {
         options={{
           title: t('tab_add'),
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="plus-circle" size={24} color={color} />
+            <View style={styles.addButton}>
+              <FontAwesome name="plus" size={24} color="#fff" />
+            </View>
           ),
         }}
       />
@@ -49,11 +57,33 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: t('tab_profile'),
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View style={focused ? styles.activeIconContainer : undefined}>
+              <FontAwesome name="user" size={24} color={color} />
+            </View>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  activeIconContainer: {
+    // Active indicator styling
+  },
+  addButton: {
+    width: 56,
+    height: 56,
+    backgroundColor: colors.primaryDark,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -30,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+});

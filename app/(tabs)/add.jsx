@@ -13,6 +13,7 @@ import {
     View,
 } from 'react-native';
 import { CATEGORIES } from '../../constants/categories';
+import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useDreamStore } from '../../store/dreamStore';
 import { useTranslation } from '../../store/languageStore';
@@ -25,7 +26,6 @@ export default function AddDreamScreen() {
   const { addDream, isLoading } = useDreamStore();
   const { t } = useTranslation();
 
-  // Filter out 'all' from categories for selection
   const selectableCategories = CATEGORIES.filter(c => c.id !== 'all');
 
   const handleSubmit = async () => {
@@ -84,7 +84,7 @@ export default function AddDreamScreen() {
             <TextInput
               style={styles.input}
               placeholder={t('dream_title_placeholder')}
-              placeholderTextColor="#666"
+              placeholderTextColor={colors.textMuted}
               value={title}
               onChangeText={setTitle}
               maxLength={100}
@@ -102,6 +102,7 @@ export default function AddDreamScreen() {
                     selectedCategory === cat.id && styles.categoryOptionActive,
                   ]}
                   onPress={() => setSelectedCategory(cat.id)}
+                  activeOpacity={0.7}
                 >
                   <Text style={styles.categoryOptionIcon}>{cat.icon}</Text>
                   <Text
@@ -122,7 +123,7 @@ export default function AddDreamScreen() {
             <TextInput
               style={[styles.input, styles.textArea]}
               placeholder={t('dream_content_placeholder')}
-              placeholderTextColor="#666"
+              placeholderTextColor={colors.textMuted}
               value={content}
               onChangeText={setContent}
               multiline
@@ -136,6 +137,7 @@ export default function AddDreamScreen() {
             style={[styles.submitButton, isLoading && styles.submitButtonDisabled]}
             onPress={handleSubmit}
             disabled={isLoading}
+            activeOpacity={0.8}
           >
             {isLoading ? (
               <View style={styles.loadingContainer}>
@@ -162,28 +164,29 @@ export default function AddDreamScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   scrollContent: {
-    padding: 20,
+    padding: 24,
   },
   header: {
     alignItems: 'center',
     marginBottom: 32,
+    marginTop: 20,
   },
   emoji: {
-    fontSize: 48,
-    marginBottom: 12,
+    fontSize: 56,
+    marginBottom: 16,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#888',
+    color: colors.textSecondary,
     textAlign: 'center',
   },
   form: {
@@ -195,16 +198,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.text,
   },
   input: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.inputBg,
+    borderRadius: borderRadius.xl,
     padding: 16,
     fontSize: 16,
-    color: '#fff',
+    color: colors.text,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   categoryGrid: {
     flexDirection: 'row',
@@ -214,16 +217,17 @@ const styles = StyleSheet.create({
   categoryOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a2e',
-    paddingHorizontal: 12,
+    backgroundColor: colors.inputBg,
+    paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   categoryOptionActive: {
-    backgroundColor: '#6c5ce7',
-    borderColor: '#6c5ce7',
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
+    ...shadows.button,
   },
   categoryOptionIcon: {
     fontSize: 16,
@@ -231,11 +235,11 @@ const styles = StyleSheet.create({
   },
   categoryOptionText: {
     fontSize: 14,
-    color: '#888',
+    color: colors.textSecondary,
     fontWeight: '500',
   },
   categoryOptionTextActive: {
-    color: '#fff',
+    color: colors.text,
   },
   textArea: {
     minHeight: 160,
@@ -243,22 +247,23 @@ const styles = StyleSheet.create({
   },
   charCount: {
     fontSize: 12,
-    color: '#666',
+    color: colors.textMuted,
     textAlign: 'right',
     marginTop: 4,
   },
   submitButton: {
-    backgroundColor: '#6c5ce7',
-    borderRadius: 12,
+    backgroundColor: colors.primaryDark,
+    borderRadius: borderRadius.xl,
     padding: 18,
     alignItems: 'center',
     marginTop: 12,
+    ...shadows.button,
   },
   submitButtonDisabled: {
     opacity: 0.7,
   },
   submitButtonText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: 18,
     fontWeight: '600',
   },
@@ -268,26 +273,26 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   loadingText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: 16,
   },
   tips: {
     marginTop: 32,
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.lg,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   tipsTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.text,
     marginBottom: 12,
   },
   tipText: {
     fontSize: 14,
-    color: '#888',
+    color: colors.textSecondary,
     marginBottom: 6,
     lineHeight: 20,
   },

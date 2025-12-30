@@ -2,19 +2,15 @@
 
 ## Current Status
 
-✅ **Core implementation complete** - App structure, authentication, and dream features built.
+✅ **Teal design implemented** - New visual theme matching design.js reference.
 
 ## Recent Changes (Latest Session)
 
-1. Created Expo project with tabs template
-2. Set up Firebase configuration with offline persistence
-3. Implemented Zustand stores (auth + dreams)
-4. Built all screens:
-   - Login/Register (auth)
-   - Dream list with search/filter
-   - Add dream with Gemini integration
-   - Dream detail view
-   - Profile with logout
+1. Added multi-language support (Turkish + English)
+2. Implemented teal color scheme from design.js
+3. Added glassmorphism card design with icon badges
+4. Created floating add button in tab bar
+5. Added language switcher in profile
 
 ## Active Decisions
 

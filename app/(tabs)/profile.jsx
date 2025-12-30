@@ -6,13 +6,13 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
 
 export default function ProfileScreen() {
   const { user, signOut, isLoading } = useAuthStore();
-  const { t, language, setLanguage, getLanguages, getCurrentLanguage } = useTranslation();
-  const currentLang = getCurrentLanguage();
+  const { t, language, setLanguage, getLanguages } = useTranslation();
   const languages = getLanguages();
 
   const handleSignOut = () => {
@@ -38,6 +38,8 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={styles.pageTitle}>{t('tab_profile')}</Text>
+      
       <View style={styles.profileCard}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>
@@ -82,6 +84,7 @@ export default function ProfileScreen() {
                 language === lang.code && styles.languageOptionActive,
               ]}
               onPress={() => handleLanguageChange(lang.code)}
+              activeOpacity={0.7}
             >
               <Text style={styles.languageFlag}>{lang.flag}</Text>
               <Text
@@ -113,6 +116,7 @@ export default function ProfileScreen() {
         style={styles.signOutButton}
         onPress={handleSignOut}
         disabled={isLoading}
+        activeOpacity={0.8}
       >
         <Text style={styles.signOutText}>{t('logout')}</Text>
       </TouchableOpacity>
@@ -123,38 +127,47 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   content: {
-    padding: 20,
+    padding: 24,
     paddingBottom: 40,
+  },
+  pageTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: colors.primary,
+    marginBottom: 24,
+    marginTop: 16,
   },
   profileCard: {
     alignItems: 'center',
-    backgroundColor: '#1a1a2e',
-    borderRadius: 16,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.xxl,
     padding: 24,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
+    ...shadows.card,
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#6c5ce7',
+    backgroundColor: colors.primaryDark,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
+    ...shadows.button,
   },
   avatarText: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.text,
   },
   email: {
     fontSize: 18,
-    color: '#fff',
+    color: colors.text,
     fontWeight: '500',
   },
   section: {
@@ -163,7 +176,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#888',
+    color: colors.textMuted,
     marginBottom: 12,
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -171,12 +184,12 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.lg,
     padding: 16,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   menuIcon: {
     fontSize: 20,
@@ -187,12 +200,12 @@ const styles = StyleSheet.create({
   },
   menuLabel: {
     fontSize: 14,
-    color: '#888',
+    color: colors.textMuted,
     marginBottom: 2,
   },
   menuValue: {
     fontSize: 16,
-    color: '#fff',
+    color: colors.text,
     fontWeight: '500',
   },
   languageContainer: {
@@ -204,37 +217,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.lg,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
     gap: 8,
   },
   languageOptionActive: {
-    backgroundColor: '#6c5ce7',
-    borderColor: '#6c5ce7',
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
+    ...shadows.button,
   },
   languageFlag: {
     fontSize: 24,
   },
   languageName: {
     fontSize: 16,
-    color: '#888',
+    color: colors.textMuted,
     fontWeight: '500',
   },
   languageNameActive: {
-    color: '#fff',
+    color: colors.text,
   },
   signOutButton: {
-    backgroundColor: '#ff4757',
-    borderRadius: 12,
+    backgroundColor: colors.danger,
+    borderRadius: borderRadius.lg,
     padding: 16,
     alignItems: 'center',
     marginTop: 12,
   },
   signOutText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -10,6 +10,7 @@ import {
     View,
 } from 'react-native';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
+import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useDreamStore } from '../../store/dreamStore';
 import { useTranslation } from '../../store/languageStore';
@@ -55,7 +56,7 @@ export default function DreamDetailScreen() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6c5ce7" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -75,16 +76,18 @@ export default function DreamDetailScreen() {
       <Stack.Screen
         options={{
           title: t('dream_detail'),
-          headerStyle: { backgroundColor: '#0a0a1a' },
-          headerTintColor: '#fff',
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.text,
         }}
       />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <View style={styles.categoryBadge}>
-            <Text style={styles.categoryIcon}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.iconText}>
               {getCategoryIcon(currentDream.category)}
             </Text>
+          </View>
+          <View style={styles.categoryBadge}>
             <Text style={styles.categoryText}>{categoryLabel}</Text>
           </View>
           <Text style={styles.title}>{currentDream.title}</Text>
@@ -111,7 +114,11 @@ export default function DreamDetailScreen() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+        <TouchableOpacity 
+          style={styles.deleteButton} 
+          onPress={handleDelete}
+          activeOpacity={0.8}
+        >
           <Text style={styles.deleteButtonText}>🗑️ {t('delete_dream')}</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -122,59 +129,67 @@ export default function DreamDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   content: {
-    padding: 20,
+    padding: 24,
     paddingBottom: 40,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   errorText: {
     fontSize: 18,
-    color: '#888',
+    color: colors.textSecondary,
   },
   header: {
-    marginBottom: 24,
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  iconContainer: {
+    width: 72,
+    height: 72,
+    backgroundColor: colors.primaryDark,
+    borderRadius: borderRadius.xl,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+    ...shadows.button,
+  },
+  iconText: {
+    fontSize: 36,
   },
   categoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#6c5ce7',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    alignSelf: 'flex-start',
-    marginBottom: 12,
-  },
-  categoryIcon: {
-    fontSize: 14,
-    marginRight: 6,
+    backgroundColor: colors.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: borderRadius.full,
+    marginBottom: 16,
   },
   categoryText: {
     fontSize: 14,
-    color: '#fff',
-    fontWeight: '500',
+    color: colors.text,
+    fontWeight: '600',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.text,
     marginBottom: 8,
+    textAlign: 'center',
   },
   date: {
     fontSize: 14,
-    color: '#888',
+    color: colors.textMuted,
   },
   section: {
     marginBottom: 24,
@@ -182,41 +197,42 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.text,
     marginBottom: 12,
   },
   card: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 16,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.xxl,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
+    ...shadows.card,
   },
   dreamContent: {
     fontSize: 16,
-    color: '#ddd',
+    color: colors.textSecondary,
     lineHeight: 26,
   },
   analysisCard: {
-    borderColor: '#6c5ce7',
+    borderColor: colors.primary,
     borderWidth: 1,
   },
   analysisText: {
     fontSize: 16,
-    color: '#ddd',
+    color: colors.textSecondary,
     lineHeight: 26,
   },
   deleteButton: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.lg,
     padding: 16,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ff4757',
+    borderColor: colors.danger,
     marginTop: 12,
   },
   deleteButtonText: {
-    color: '#ff4757',
+    color: colors.danger,
     fontSize: 16,
     fontWeight: '600',
   },

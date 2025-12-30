@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
+import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useDreamStore } from '../../store/dreamStore';
 import { useTranslation } from '../../store/languageStore';
@@ -50,22 +51,31 @@ export default function DreamListScreen() {
     <TouchableOpacity
       style={styles.dreamCard}
       onPress={() => router.push(`/dream/${item.id}`)}
+      activeOpacity={0.8}
     >
-      <View style={styles.cardHeader}>
-        <Text style={styles.categoryIcon}>{getCategoryIcon(item.category)}</Text>
-        <Text style={styles.categoryText}>
-          {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
-        </Text>
+      <View style={styles.cardContent}>
+        <View style={styles.iconContainer}>
+          <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
+        </View>
+        <View style={styles.cardTextContent}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.dreamTitle} numberOfLines={1}>
+              {item.title}
+            </Text>
+            <View style={styles.categoryBadge}>
+              <Text style={styles.categoryBadgeText}>
+                {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.dreamContent} numberOfLines={2}>
+            {item.content}
+          </Text>
+          <Text style={styles.dreamDate}>
+            {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US') || t('no_date')}
+          </Text>
+        </View>
       </View>
-      <Text style={styles.dreamTitle} numberOfLines={1}>
-        {item.title}
-      </Text>
-      <Text style={styles.dreamContent} numberOfLines={2}>
-        {item.content}
-      </Text>
-      <Text style={styles.dreamDate}>
-        {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US') || t('no_date')}
-      </Text>
     </TouchableOpacity>
   );
 
@@ -84,6 +94,7 @@ export default function DreamListScreen() {
                 styles.categoryChipActive,
             ]}
             onPress={() => setCategory(item.id === 'all' ? null : item.id)}
+            activeOpacity={0.7}
           >
             <Text style={styles.categoryChipIcon}>{item.icon}</Text>
             <Text
@@ -104,11 +115,16 @@ export default function DreamListScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{t('tab_dreams')}</Text>
+      </View>
+
       <View style={styles.searchContainer}>
+        <Text style={styles.searchIcon}>🔍</Text>
         <TextInput
           style={styles.searchInput}
           placeholder={t('search_placeholder')}
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -118,11 +134,11 @@ export default function DreamListScreen() {
 
       {isLoading && !refreshing ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6c5ce7" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : filteredDreams.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyIcon}>🌙</Text>
+          <Text style={styles.emptyIcon}>💭</Text>
           <Text style={styles.emptyText}>{t('no_dreams')}</Text>
           <Text style={styles.emptySubtext}>{t('no_dreams_hint')}</Text>
         </View>
@@ -136,7 +152,7 @@ export default function DreamListScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor="#6c5ce7"
+              tintColor={colors.primary}
             />
           }
         />
@@ -148,54 +164,73 @@ export default function DreamListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  headerTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: colors.primary,
   },
   searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 24,
+    marginBottom: 16,
+    backgroundColor: colors.inputBg,
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: colors.border,
     paddingHorizontal: 16,
-    paddingTop: 16,
+  },
+  searchIcon: {
+    fontSize: 16,
+    marginRight: 12,
   },
   searchInput: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
-    padding: 14,
+    flex: 1,
+    paddingVertical: 16,
     fontSize: 16,
-    color: '#fff',
-    borderWidth: 1,
-    borderColor: '#2a2a4e',
+    color: colors.text,
   },
   categoryContainer: {
-    marginTop: 16,
+    marginBottom: 16,
   },
   categoryList: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     gap: 8,
   },
   categoryChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a2e',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
+    backgroundColor: colors.inputBg,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: borderRadius.full,
     marginRight: 8,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   categoryChipActive: {
-    backgroundColor: '#6c5ce7',
-    borderColor: '#6c5ce7',
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
+    ...shadows.button,
   },
   categoryChipIcon: {
     fontSize: 14,
     marginRight: 6,
   },
   categoryChipText: {
-    color: '#888',
+    color: colors.textSecondary,
     fontSize: 14,
     fontWeight: '500',
   },
   categoryChipTextActive: {
-    color: '#fff',
+    color: colors.text,
   },
   loadingContainer: {
     flex: 1,
@@ -215,55 +250,80 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.text,
     marginBottom: 8,
     textAlign: 'center',
   },
   emptySubtext: {
     fontSize: 16,
-    color: '#888',
+    color: colors.textSecondary,
     textAlign: 'center',
   },
   listContainer: {
-    padding: 16,
-    gap: 12,
+    padding: 24,
   },
   dreamCard: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.xxl,
+    padding: 20,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
-    marginBottom: 12,
+    borderColor: colors.border,
+    ...shadows.card,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    backgroundColor: colors.primaryDark,
+    borderRadius: borderRadius.lg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+    ...shadows.button,
+  },
+  iconText: {
+    fontSize: 24,
+  },
+  cardTextContent: {
+    flex: 1,
   },
   cardHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     marginBottom: 8,
-  },
-  categoryIcon: {
-    fontSize: 16,
-    marginRight: 6,
-  },
-  categoryText: {
-    fontSize: 12,
-    color: '#6c5ce7',
-    fontWeight: '500',
   },
   dreamTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff',
-    marginBottom: 6,
+    color: colors.text,
+    flex: 1,
+    marginRight: 8,
+  },
+  categoryBadge: {
+    backgroundColor: colors.inputBg,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  categoryBadgeText: {
+    fontSize: 12,
+    color: colors.textMuted,
   },
   dreamContent: {
     fontSize: 14,
-    color: '#aaa',
+    color: colors.textSecondary,
     lineHeight: 20,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   dreamDate: {
     fontSize: 12,
-    color: '#666',
+    color: colors.textMuted,
   },
 });

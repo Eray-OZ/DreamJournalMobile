@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
 
@@ -55,7 +56,7 @@ export default function LoginScreen() {
           <TextInput
             style={styles.input}
             placeholder={t('email')}
-            placeholderTextColor="#888"
+            placeholderTextColor={colors.textMuted}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -65,7 +66,7 @@ export default function LoginScreen() {
           <TextInput
             style={styles.input}
             placeholder={t('password')}
-            placeholderTextColor="#888"
+            placeholderTextColor={colors.textMuted}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -75,6 +76,7 @@ export default function LoginScreen() {
             style={styles.loginButton}
             onPress={handleLogin}
             disabled={isLoading}
+            activeOpacity={0.8}
           >
             {isLoading ? (
               <ActivityIndicator color="#fff" />
@@ -93,6 +95,7 @@ export default function LoginScreen() {
             style={styles.googleButton}
             onPress={handleGoogleSignIn}
             disabled={isLoading}
+            activeOpacity={0.8}
           >
             <Text style={styles.googleButtonText}>🔵 {t('google_signin')}</Text>
           </TouchableOpacity>
@@ -114,7 +117,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: colors.background,
   },
   content: {
     flex: 1,
@@ -126,41 +129,42 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   emoji: {
-    fontSize: 64,
+    fontSize: 72,
     marginBottom: 16,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#888',
+    color: colors.textSecondary,
     textAlign: 'center',
   },
   form: {
     gap: 16,
   },
   input: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.inputBg,
+    borderRadius: borderRadius.xl,
     padding: 16,
     fontSize: 16,
-    color: '#fff',
+    color: colors.text,
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   loginButton: {
-    backgroundColor: '#6c5ce7',
-    borderRadius: 12,
+    backgroundColor: colors.primaryDark,
+    borderRadius: borderRadius.xl,
     padding: 16,
     alignItems: 'center',
     marginTop: 8,
+    ...shadows.button,
   },
   loginButtonText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: 18,
     fontWeight: '600',
   },
@@ -172,23 +176,23 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#2a2a4e',
+    backgroundColor: colors.border,
   },
   dividerText: {
-    color: '#888',
+    color: colors.textMuted,
     paddingHorizontal: 16,
     fontSize: 14,
   },
   googleButton: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: 12,
+    backgroundColor: colors.cardBg,
+    borderRadius: borderRadius.xl,
     padding: 16,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#2a2a4e',
+    borderColor: colors.border,
   },
   googleButtonText: {
-    color: '#fff',
+    color: colors.text,
     fontSize: 16,
     fontWeight: '500',
   },
@@ -198,11 +202,11 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   footerText: {
-    color: '#888',
+    color: colors.textSecondary,
     fontSize: 16,
   },
   registerLink: {
-    color: '#6c5ce7',
+    color: colors.primary,
     fontSize: 16,
     fontWeight: '600',
   },
