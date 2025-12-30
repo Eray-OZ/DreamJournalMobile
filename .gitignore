@@ -32,10 +32,12 @@ yarn-error.*
 
 # local env files
 .env*.local
-
+.env
 # typescript
 *.tsbuildinfo
 
 # generated native folders
 /ios
 /android
+
+/dream-journal-18a9b-firebase-adminsdk-fbsvc-8a7facb2c7.json
