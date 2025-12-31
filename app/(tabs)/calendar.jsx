@@ -99,6 +99,93 @@ export default function CalendarScreen() {
     );
   };
 
+  // Custom Day Component for "Glaze" effect
+  const CustomDay = ({ date, state, marking }) => {
+    const isSelected = marking?.selected;
+    const hasDreams = marking?.dots?.length > 0;
+    const isToday = state === 'today';
+    const isDisabled = state === 'disabled';
+    
+    // Base container style
+    let containerStyle = styles.dayContainer;
+    let textStyle = styles.dayText;
+    
+    // Selection style overrides everything
+    if (isSelected) {
+      // handled by wrapper logic below
+      textStyle = styles.selectedDayText;
+    } else if (isToday) {
+      textStyle = styles.todayText;
+    } else if (isDisabled) {
+      textStyle = styles.disabledText;
+    }
+    
+    const content = (
+      <View style={{ alignItems: 'center', justifyContent: 'center', width: 36, height: 36 }}>
+        <Text style={textStyle}>{date.day}</Text>
+        
+        {/* Render Dots */}
+        <View style={styles.dotsContainer}>
+          {marking?.dots?.map((dot, index) => (
+            <View 
+              key={index} 
+              style={[
+                styles.dot, 
+                { backgroundColor: isSelected ? '#fff' : dot.color }
+              ]} 
+            />
+          ))}
+        </View>
+      </View>
+    );
+
+    if (isSelected) {
+      return (
+        <TouchableOpacity onPress={() => handleDayPress(date)} activeOpacity={0.7}>
+          <LinearGradient
+            colors={[colors.primary, colors.secondary]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.dayContainer, styles.selectedDayContainer]}
+          >
+            {content}
+          </LinearGradient>
+        </TouchableOpacity>
+      );
+    }
+
+    if (hasDreams) {
+      // Determine color based on first dot or default to primary
+      const primaryDotColor = marking?.dots?.[0]?.color || colors.primary;
+      
+      return (
+        <TouchableOpacity onPress={() => handleDayPress(date)} activeOpacity={0.7}>
+          <LinearGradient
+            // Make it more colorful/glazed by using the category color with transparency
+            // or a brighter glass gradient
+            colors={[`${primaryDotColor}CC`, `${primaryDotColor}66`]} 
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.dayContainer, styles.glazedDayContainer, { borderColor: `${primaryDotColor}CC` }]}
+          >
+            {content}
+          </LinearGradient>
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+      <TouchableOpacity 
+        onPress={() => handleDayPress(date)} 
+        activeOpacity={0.7}
+        disabled={isDisabled}
+        style={styles.dayContainer}
+      >
+        {content}
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -116,33 +203,17 @@ export default function CalendarScreen() {
       </View>
       
       <Calendar
-        markingType="multi-dot"
+        dayComponent={CustomDay}
         markedDates={markedDates}
         onDayPress={handleDayPress}
         theme={{
-          calendarBackground: colors.background,
+          calendarBackground: colors.cardBg,
           textSectionTitleColor: colors.textSecondary,
-          selectedDayBackgroundColor: colors.primary,
-          selectedDayTextColor: '#fff',
-          todayTextColor: colors.secondary,
-          dayTextColor: colors.text,
-          textDisabledColor: colors.textMuted,
           monthTextColor: colors.text,
           arrowColor: colors.primary,
-          textDayFontWeight: '600',
           textMonthFontWeight: '800',
-          textDayHeaderFontWeight: '600',
-          textDayFontSize: 16,
           textMonthFontSize: 18,
           textDayHeaderFontSize: 12,
-            'stylesheet.day.basic': {
-            base: {
-              width: 40,
-              height: 40,
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-          },
         }}
         style={styles.calendar}
       />
@@ -215,6 +286,59 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.glassBorder,
     ...shadows.card,
+  },
+  // Day Component Styles
+  dayContainer: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+  },
+  glazedDayContainer: {
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  selectedDayContainer: {
+    borderRadius: 12,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  dayText: {
+    color: colors.text,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  selectedDayText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  todayText: {
+    color: colors.secondary,
+    fontWeight: '700',
+  },
+  disabledText: {
+    color: colors.textMuted,
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 2,
+    gap: 2,
+  },
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
   dreamsList: {
     flex: 1,

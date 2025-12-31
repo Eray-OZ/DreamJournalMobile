@@ -80,6 +80,8 @@ export default {
   language: 'Language',
   logout_confirm: 'Are you sure you want to logout?',
   unknown_user: 'Unknown user',
+  visualize_dream: 'Visualize Dream',
+  ai_analysis: 'AI Analysis',
   
   // Categories
   cat_all: 'All',

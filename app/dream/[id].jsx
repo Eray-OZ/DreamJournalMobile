@@ -1,9 +1,10 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -19,8 +20,9 @@ import { useTranslation } from '../../store/languageStore';
 export default function DreamDetailScreen() {
   const { id } = useLocalSearchParams();
   const { user } = useAuthStore();
-  const { currentDream, fetchDreamById, deleteDream, isLoading, dreams } = useDreamStore();
+  const { currentDream, fetchDreamById, deleteDream, generateDreamImage, isLoading, dreams } = useDreamStore();
   const { t, language } = useTranslation();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Try to get dream from cached list first to avoid flashing
   const cachedDream = useMemo(() => {
@@ -57,6 +59,16 @@ export default function DreamDetailScreen() {
         },
       ]
     );
+  };
+
+  const handleVisualize = async () => {
+    setIsGenerating(true);
+    const { success, error } = await generateDreamImage(user.uid, id, dream.content);
+    setIsGenerating(false);
+    
+    if (!success) {
+        Alert.alert(t('error') || 'Error', error);
+    }
   };
 
   // Only show loading if we have no dream data at all
@@ -105,6 +117,35 @@ export default function DreamDetailScreen() {
             </View>
             <Text style={styles.categoryText}>{categoryLabel}</Text>
         </View>
+
+        {dream.imageUrl ? (
+            <View style={styles.imageContainer}>
+                <Image source={{ uri: dream.imageUrl }} style={styles.dreamImage} resizeMode="cover" />
+            </View>
+        ) : (
+            <TouchableOpacity 
+                style={styles.visualizeButton}
+                onPress={handleVisualize}
+                disabled={isGenerating}
+                activeOpacity={0.8}
+            >
+                <LinearGradient
+                    colors={[colors.primary, colors.secondary]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.visualizeGradient}
+                >
+                    {isGenerating ? (
+                        <ActivityIndicator color="#fff" size="small" />
+                    ) : (
+                        <>
+                            <Text style={styles.visualizeIcon}>🎨</Text>
+                            <Text style={styles.visualizeText}>{t('visualize_dream') || 'Visualize Dream'}</Text>
+                        </>
+                    )}
+                </LinearGradient>
+            </TouchableOpacity>
+        )}
 
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>NOTES</Text>
@@ -271,5 +312,42 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontSize: 16,
     fontWeight: '700',
+  },
+  visualizeButton: {
+    marginBottom: 32,
+    borderRadius: borderRadius.xl,
+    overflow: 'hidden',
+    ...shadows.card,
+  },
+  visualizeGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+  },
+  visualizeIcon: {
+    fontSize: 20,
+    marginRight: 10,
+  },
+  visualizeText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  imageContainer: {
+    width: '100%',
+    height: 300,
+    borderRadius: borderRadius.xl,
+    overflow: 'hidden',
+    marginBottom: 32,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    ...shadows.card,
+  },
+  dreamImage: {
+    width: '100%',
+    height: '100%',
   },
 });

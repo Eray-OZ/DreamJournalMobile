@@ -80,6 +80,8 @@ export default {
   language: 'Dil',
   logout_confirm: 'Hesabınızdan çıkmak istediğinize emin misiniz?',
   unknown_user: 'Bilinmeyen kullanıcı',
+  visualize_dream: 'Rüyayı Görselleştir',
+  ai_analysis: 'YZ Analizi',
   
   // Categories
   cat_all: 'Tümü',

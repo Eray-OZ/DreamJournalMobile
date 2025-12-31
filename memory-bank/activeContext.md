@@ -2,37 +2,30 @@
 
 ## Current Status
 
-✅ **Calendar View Added** - Dreams shown by date with category-colored dots.
-✅ **Date Selection** - Users can select a date when adding dreams.
-✅ **Sorting Fixed** - Dreams added "Today" appear at the top (preserve time).
-✅ **Navigation Fixed** - Deleting a dream safely returns to the main tab.
+✅ **Dream Visualization** - Functional via Pollinations.ai (quality TBD).
+✅ **Calendar Features** - Vibrant, glazed visuals synced with dream categories.
+✅ **Core Features** - Journaling, AI analysis, Authentication.
 
 ## Recent Changes (Dec 31, 2024)
 
-### UI/UX Refinements
+### Dream Visualization 🎨
 
-- **Profile Icon**: Moved to header in Home and Calendar screens.
-- **Tab Bar**: 3 items (Dreams, Add, Calendar). Profile removed from tab bar.
-- **Sorting**: Dreams added for "Today" now use `serverTimestamp()` to ensure they appear at the top of the list. Backdated dreams appear chronologically.
-- **Navigation**: Fixed crash when deleting a dream by using `router.replace('/(tabs)')`.
+- Implemented image generation using **Pollinations.ai** (fallback from HF due to API limits).
+- Added "Visualize Dream" button to `DreamDetailScreen`.
+- Images are saved as Base64 in Firestore (simulated via update logic).
 
-### Date Selection
+### Calendar Visuals
 
-- Added date picker to Add Dream screen.
-- Defaults to today's date.
-- Future dates disabled.
-
-### Calendar Feature
-
-- `app/(tabs)/calendar.jsx` with category-colored dots.
-- `CATEGORY_COLORS` mapping handling English IDs.
+- High opacity, vibrant category colors for dream days.
+- Synced `CATEGORY_COLORS` with `index.tsx`.
+- Removed console logs and polished translations.
 
 ## Dependencies
 
-`expo-router`, `zustand`, `firebase`, `expo-linear-gradient`, `expo-blur`, `react-native-calendars`
+`expo-router`, `zustand`, `firebase`, `react-native-calendars`, `expo-linear-gradient`
 
 ## Next Steps
 
-1. [ ] Dream editing
-2. [ ] Google Sign-In
-3. [ ] Dream statistics
+1. [ ] Improve image quality (Explore flux-pro or other paid APIs if needed).
+2. [ ] Dream editing.
+3. [ ] Dream statistics.

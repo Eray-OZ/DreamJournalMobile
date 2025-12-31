@@ -15,10 +15,10 @@ export const CATEGORIES = [
 export const CATEGORY_COLORS = {
   fear: '#EF4444',
   relationship: '#EC4899',
-  work: '#F59E0B',
+  work: '#8B5CF6',
   family: '#10B981',
   past: '#6366F1',
-  future: '#8B5CF6',
+  future: '#06B6D4',
   other: '#6B7280',
 };
 

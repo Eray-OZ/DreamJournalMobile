@@ -115,6 +115,42 @@ export const useDreamStore = create((set, get) => ({
     return filtered;
   },
 
+  // Generate AI image for dream
+  generateDreamImage: async (userId, dreamId, content) => {
+    set({ isLoading: true, error: null });
+
+    const { image, error: aiError } = await aiService.generateDreamImage(content);
+
+    if (aiError) {
+      set({ isLoading: false, error: aiError });
+      return { success: false, error: aiError };
+    }
+
+    // Save image to Firestore (Note: Base64 might be large, ideally use Storage)
+    const { error: dbError } = await dreamService.updateDream(userId, dreamId, {
+      imageUrl: image
+    });
+
+    if (dbError) {
+       set({ isLoading: false, error: dbError });
+       return { success: false, error: dbError };
+    }
+
+    // Update local state
+    const current = get().currentDream;
+    if (current && current.id === dreamId) {
+        set({ currentDream: { ...current, imageUrl: image } });
+    }
+    
+    // Update list
+    set((state) => ({
+      dreams: state.dreams.map(d => d.id === dreamId ? { ...d, imageUrl: image } : d)
+    }));
+
+    set({ isLoading: false });
+    return { success: true, error: null };
+  },
+
   // Clear current dream
   clearCurrentDream: () => set({ currentDream: null }),
 
