@@ -27,24 +27,27 @@ export const useDreamStore = create((set, get) => ({
   },
 
   // Add new dream with AI analysis
-  addDream: async (userId, title, content, category) => {
+  addDream: async (userId, title, content, category, language = 'tr') => {
     set({ isLoading: true, error: null });
 
     try {
       // Process dream with AI (only analysis, no auto-categorization)
-      const { analysis, error: aiError } = await aiService.analyzeDream(content);
+      const { analysis, error: aiError } = await aiService.analyzeDream(content, language);
 
       if (aiError && analysis === null) {
         set({ isLoading: false, error: aiError });
         return { id: null, error: aiError };
       }
 
+      // Determine fallback text based on language
+      const fallbackAnalysis = language === 'tr' ? 'Analiz yapılamadı' : 'Analysis could not be performed';
+
       // Save to Firestore with user-selected category
       const dreamData = {
         title,
         content,
-        analysis: analysis || 'Analiz yapılamadı',
-        category: category || 'Diğer',
+        analysis: analysis || fallbackAnalysis,
+        category: category || 'other',
       };
 
       const { id, error } = await dreamService.addDream(userId, dreamData);

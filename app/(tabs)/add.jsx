@@ -21,10 +21,10 @@ import { useTranslation } from '../../store/languageStore';
 export default function AddDreamScreen() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Diğer');
+  const [selectedCategory, setSelectedCategory] = useState('other');
   const { user } = useAuthStore();
   const { addDream, isLoading } = useDreamStore();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   const selectableCategories = CATEGORIES.filter(c => c.id !== 'all');
 
@@ -44,20 +44,15 @@ export default function AddDreamScreen() {
       return;
     }
 
-    const { id, error } = await addDream(user.uid, title.trim(), content.trim(), selectedCategory);
+    const { id, error } = await addDream(user.uid, title.trim(), content.trim(), selectedCategory, language);
 
     if (id) {
-      Alert.alert(t('success'), t('dream_saved'), [
-        {
-          text: t('confirm'),
-          onPress: () => {
-            setTitle('');
-            setContent('');
-            setSelectedCategory('Diğer');
-            router.push('/(tabs)');
-          },
-        },
-      ]);
+      // Reset form
+      setTitle('');
+      setContent('');
+      setSelectedCategory('other');
+      // Navigate directly to the new dream's detail page
+      router.push(`/dream/${id}`);
     } else if (error) {
       Alert.alert(t('error'), error);
     }

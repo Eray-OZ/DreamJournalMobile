@@ -2,40 +2,42 @@
 
 ## Current Status
 
-✅ **UI Revamp Complete** - The app features the "Deep Nebula" glassmorphic design.
-✅ **Refined**: Home Screen simplified by removing "Read Story" button, decorative icons, calendar icon, header emoji, and search filter icon.
-✅ **Polished**: Dream card content aligned with category icon.
-✅ **Detail Screen Updated**: Category name moved below date, background removed, font size reduced.
+✅ **UI Revamp Complete** - Deep Nebula glassmorphic design implemented.
+✅ **Localization Complete** - AI prompts respond to app language (TR/EN).
+✅ **UX Improved** - Direct navigation to dream detail after creation.
 
-## Recent Changes (Latest Session - Dec 31, 2024 (2))
+## Recent Changes (Dec 31, 2024 - Session 2)
 
-1. **New Theme**: Implemented Deep Nebula Purple (`#0F0720`) background with Violet/Pink accents.
-2. **Glassmorphic Navigation**: Added a floating glass tab bar with a custom gradient FAB.
-3. **Home Screen**:
-   - Refined Header: Clean "My Dreams" title.
-   - Refined Cards: Minimalist glassmorphic design, content aligned with icon.
-   - Search: Minimalist pill-shaped input (no filter icon).
-4. **Dream Detail**:
-   - Consistent glassmorphic styling.
-   - Radiant gradient border for AI Analysis section.
-   - Header Refined: Title -> Date -> Category (smaller text).
+### UI/UX
 
-## Active Decisions
+1. **Theme**: Deep Nebula Purple (`#0F0720`) with violet/pink gradients.
+2. **Tab Bar**: Floating glass tab bar with gradient FAB.
+3. **Home Screen**: Minimalist header, glassmorphic cards, pill search.
+4. **Dream Detail**: Clean header (Title → Date → Category), gradient AI Analysis border.
+5. **Post-Creation Flow**: Removed success alert, direct navigation to new dream.
 
-- **Design System**: Fully adopted `design.html` aesthetics.
-- **Dependencies**: Added `expo-linear-gradient` and `expo-blur`.
-- **Navigation**: Customized `expo-router` Tabs with `BlurView`.
+### Code Changes
+
+- `constants/theme.js`: New color palette and glassmorphism tokens.
+- `app/_layout.tsx`: Global theme colors.
+- `app/(tabs)/_layout.tsx`: Glass tab bar with BlurView + LinearGradient FAB.
+- `app/(tabs)/index.tsx`: Redesigned dream list and header.
+- `app/(tabs)/add.jsx`: Passes language to AI, navigates to dream detail on success.
+- `app/dream/[id].jsx`: Refined header layout.
+- `services/ai.service.js`: Localized prompts (TR/EN), removed unused category prompt.
+- `store/dreamStore.js`: `addDream` accepts language parameter.
+
+### Dependencies Added
+
+- `expo-linear-gradient`
+- `expo-blur`
 
 ## Next Steps
 
-1. [ ] Test Google Sign-In (Pending Setup)
-2. [ ] Add pull-to-refresh (Refine animation)
-3. [ ] Dream editing feature
+1. [ ] Test Google Sign-In
+2. [ ] Dream editing feature
+3. [ ] Pull-to-refresh refinement
 
 ## Known Issues
-
-- None currently.
-
-## Blockers
 
 - None.
