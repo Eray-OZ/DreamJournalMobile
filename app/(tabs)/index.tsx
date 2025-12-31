@@ -16,7 +16,10 @@ import {
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SwipeableDreamItem } from '../../components/SwipeableDreamItem';
+import { WavyUnderline } from '../../components/WavyUnderline';
+import { ScaleButton } from '../../components/ScaleButton';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
 import { borderRadius, colors, shadows, spacing } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
@@ -87,12 +90,13 @@ export default function DreamListScreen() {
     );
   };
 
-  const renderDreamCard = ({ item }: { item: any }) => (
-    <SwipeableDreamItem onDelete={() => handleDelete(item.id)}>
-      <TouchableOpacity
+  const renderDreamCard = ({ item, index }: { item: any, index: number }) => (
+    <Animated.View entering={FadeInDown.delay(index * 100).duration(500)}>
+      <SwipeableDreamItem onDelete={() => handleDelete(item.id)}>
+      <ScaleButton
         style={styles.dreamCardWrapper}
         onPress={() => router.push(`/dream/${item.id}`)}
-        activeOpacity={0.9}
+        activeScale={0.97}
       >
         <View style={styles.dreamCard}>
           <View style={styles.cardHeader}>
@@ -126,8 +130,9 @@ export default function DreamListScreen() {
 
 
         </View>
-      </TouchableOpacity>
+      </ScaleButton>
     </SwipeableDreamItem>
+    </Animated.View>
   );
 
   const renderCategoryFilter = () => (
@@ -179,27 +184,13 @@ export default function DreamListScreen() {
             <View style={styles.titleRow}>
                 <View>
                     <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>{t('tab_dreams')}</Text>
-                        <Svg
-                        height="8"
-                        width="100%"
-                        viewBox="0 0 100 10"
-                        preserveAspectRatio="none"
-                        style={styles.titleUnderline}
-                    >
-                        <Path
-                            d="M0 5 Q50 10 100 5"
-                            stroke={colors.primaryLight}
-                            strokeWidth="3"
-                            fill="none"
-                        />
-                    </Svg>
+                    <WavyUnderline />
                 </View>
 
             </View>
           </View>
           
-          <TouchableOpacity 
-            style={styles.profileButton}
+          <ScaleButton 
             onPress={() => router.push('/add')}
           >
              <LinearGradient
@@ -210,7 +201,7 @@ export default function DreamListScreen() {
             >
               <FontAwesome name="plus" size={20} color={colors.text} />
             </LinearGradient>
-          </TouchableOpacity>
+          </ScaleButton>
       </View>
 
       <View style={styles.searchSection}>

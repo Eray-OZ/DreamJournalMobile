@@ -1,4 +1,4 @@
-# System Patterns: Dream Journal Mobile
+# System Patterns: REM
 
 ## Architecture Overview
 
@@ -57,6 +57,12 @@ app/
 ├── dream/[id].jsx  # Dynamic route
 └── _layout.tsx     # Root layout with auth guards
 ```
+
+### 4. Animation Patterns (Reanimated)
+
+- **Tactile Scale**: `ScaleButton.tsx` - Reusable spring-scaling primitive for all touch areas.
+- **Dynamic Underlines**: `WavyUnderline.tsx` - Animated SVG path drawing for header subtitles.
+- **Staggered Layouts**: Standardized use of `FadeInDown` with sequential delays for list items.
 
 ## Component Relationships
 

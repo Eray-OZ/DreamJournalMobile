@@ -1,8 +1,8 @@
-# Project Brief: Dream Journal Mobile
+# Project Brief: REM
 
 ## Project Overview
 
-A mobile application built with **Expo (React Native)** that allows users to record their dreams and receive AI-powered analysis using the **Gemini API**.
+A premium dream journaling application (formerly Dream Journal Mobile) built with **Expo (React Native)** that allows users to record their dreams and receive AI-powered analysis using the **Gemini API**. Optimized for a "Deep Nebula" aesthetic with immersive animations.
 
 ## Core Requirements
 

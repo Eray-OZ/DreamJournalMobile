@@ -1,4 +1,4 @@
-# Tech Context: Dream Journal Mobile
+# Tech Context: REM
 
 ## Technology Stack
 
@@ -10,6 +10,8 @@
 | Auth       | Firebase Auth       | v10+      |
 | Database   | Cloud Firestore     | v10+      |
 | AI         | Gemini API          | 2.0-flash |
+| Animations | Reanimated          | Latest    |
+| Build      | EAS Build           | Managed   |
 
 ## Dependencies
 
@@ -22,6 +24,7 @@
   "react-native": "0.76.x",
   "firebase": "^10.x",
   "zustand": "^4.x",
+  "react-native-reanimated": "~3.16.1",
   "@react-native-async-storage/async-storage": "^2.x"
 }
 ```
@@ -48,6 +51,7 @@ npm install          # Install dependencies
 npx expo start       # Start dev server
 npx expo run:ios     # Run on iOS simulator
 npx expo run:android # Run on Android emulator
+npx eas build -p android --profile preview # Build APK locally/cloud
 ```
 
 ## External Services

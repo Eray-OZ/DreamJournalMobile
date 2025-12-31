@@ -1,4 +1,8 @@
-# Product Context: Dream Journal Mobile
+# Product Context: REM
+
+## Vision
+
+To provide a premium, immersive dream journaling experience that feels as deep and mysterious as the dreams it records.
 
 ## Problem Statement
 

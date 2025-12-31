@@ -1,4 +1,4 @@
-# Progress: Dream Journal Mobile
+# Progress: REM
 
 ## Completed Features
 
@@ -30,15 +30,27 @@
 - [x] Date selection interaction
 - [x] Swipe to Delete in Day View
 
-### 5. UI/UX
+### 5. UI/UX & Animations
 
 - [x] Glassmorphic Design System (Deep Nebula)
 - [x] Tab Navigation
 - [x] Multi-language Support
 - [x] Swipe Gestures (Delete)
+- [x] Staggered Entrance Animations (Reanimated)
+- [x] Pulsing "Nebula Glow" effect
+- [x] SVG "Draw" underlines for headers
+- [x] Tap-scaling micro-interactions (ScaleButton)
+
+### 6. Branding & Infrastructure
+
+- [x] Full rebranding to **REM**
+- [x] Custom app icons and brand assets
+- [x] EAS Build configuration (.easignore, eas.json)
+- [x] Successfully triggered Android APK builds
 
 ## Pending Features
 
-- [ ] Dream Statistics (Charts)
 - [ ] Google Sign-In
 - [ ] Image Quality Improvements
+- [ ] Voice Recording for Dreams
+- [ ] Biometric Security Lock

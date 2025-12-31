@@ -6,11 +6,21 @@ import { PieChart } from 'react-native-gifted-charts';
 import Svg, { Path } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Animated, { 
+  FadeInDown, 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withRepeat, 
+  withTiming, 
+  withSequence 
+} from 'react-native-reanimated';
 
 import { colors, spacing, borderRadius } from '../../constants/theme';
 import { useDreamStore } from '../../store/dreamStore';
 import { CATEGORIES, CATEGORY_COLORS } from '../../constants/categories';
 import { useTranslation } from '../../store/languageStore';
+import { WavyUnderline } from '../../components/WavyUnderline';
+import { ScaleButton } from '../../components/ScaleButton';
 
 const { width } = Dimensions.get('window');
 
@@ -18,6 +28,24 @@ export default function StatsScreen() {
   const insets = useSafeAreaInsets();
   const { dreams } = useDreamStore();
   const { t } = useTranslation();
+
+  // Pulse animation for Top Theme
+  const pulse = useSharedValue(0.4);
+  
+  React.useEffect(() => {
+    pulse.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 1500 }),
+        withTiming(0.4, { duration: 1500 })
+      ),
+      -1,
+      true
+    );
+  }, []);
+
+  const pulseStyle = useAnimatedStyle(() => ({
+    opacity: pulse.value,
+  }));
 
   // --- Data Processing ---
 
@@ -62,12 +90,10 @@ export default function StatsScreen() {
             <Text style={styles.eyebrow}>REM</Text>
             <View>
               <Text style={styles.pageTitle}>{t('tab_stats')}</Text>
-              <Svg height="8" width="100%" viewBox="0 0 100 10" preserveAspectRatio="none" style={styles.titleUnderline}>
-                  <Path d="M0 5 Q50 10 100 5" stroke={colors.primaryLight} strokeWidth="3" fill="none" />
-              </Svg>
+              <WavyUnderline />
             </View>
           </View>
-          <TouchableOpacity 
+          <ScaleButton 
             onPress={() => router.push('/add')}
           >
              <LinearGradient
@@ -78,32 +104,42 @@ export default function StatsScreen() {
             >
               <FontAwesome name="plus" size={20} color={colors.text} />
             </LinearGradient>
-          </TouchableOpacity>
+          </ScaleButton>
       </View>
 
       {/* SUMMARY CARDS */}
       <View style={styles.summaryRow}>
           {/* Total Dreams */}
-          <View style={styles.summaryCard}>
+          <Animated.View 
+            entering={FadeInDown.delay(100).duration(600)}
+            style={styles.summaryCard}
+          >
               <Text style={styles.summaryValue}>{totalDreams}</Text>
               <Text style={styles.summaryLabel}>{t('total_dreams')}</Text>
-          </View>
+          </Animated.View>
 
           {/* Top Theme */}
-          <View style={[
-            styles.summaryCard, 
-            { 
-              backgroundColor: (pieData[0]?.color || colors.primary) + '20', 
-              borderColor: (pieData[0]?.color || colors.primary) + '40' 
-            }
-          ]}>
+          <Animated.View 
+            entering={FadeInDown.delay(200).duration(600)}
+            style={[
+              styles.summaryCard, 
+              { 
+                backgroundColor: (pieData[0]?.color || colors.primary) + '20', 
+                borderColor: (pieData[0]?.color || colors.primary) + '40' 
+              }
+            ]}
+          >
+              <Animated.View style={[StyleSheet.absoluteFill, { borderRadius: borderRadius.xl, borderWidth: 2, borderColor: pieData[0]?.color || colors.primaryLight }, pulseStyle]} />
               <Text style={styles.summaryValue}>{topCategory?.icon || '—'}</Text>
               <Text style={[styles.summaryLabel, { color: pieData[0]?.color || colors.primaryLight }]}>{t('top_theme')}</Text>
-          </View>
+          </Animated.View>
       </View>
 
       {/* PIE CHART SECTION */}
-      <View style={styles.chartContainer}>
+      <Animated.View 
+        entering={FadeInDown.delay(300).duration(600)}
+        style={styles.chartContainer}
+      >
           <View style={{ alignItems: 'center', paddingVertical: 20 }}>
             {pieData.length > 0 ? (
                 <PieChart
@@ -132,7 +168,7 @@ export default function StatsScreen() {
                 </View>
             ))}
           </View>
-      </View>
+      </Animated.View>
 
     </ScrollView>
   );

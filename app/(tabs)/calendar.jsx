@@ -15,6 +15,8 @@ import { Calendar } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { SwipeableDreamItem } from '../../components/SwipeableDreamItem';
+import { WavyUnderline } from '../../components/WavyUnderline';
+import { ScaleButton } from '../../components/ScaleButton';
 import { useAuthStore } from '../../store/authStore';
 import { CATEGORY_COLORS, getCategoryIcon } from '../../constants/categories';
 import { borderRadius, colors, shadows } from '../../constants/theme';
@@ -168,7 +170,7 @@ export default function CalendarScreen() {
 
     if (isSelected) {
       return (
-        <TouchableOpacity onPress={() => handleDayPress(date)} activeOpacity={0.7}>
+        <ScaleButton onPress={() => handleDayPress(date)}>
           <LinearGradient
             colors={[colors.primary, colors.secondary]}
             start={{ x: 0, y: 0 }}
@@ -177,7 +179,7 @@ export default function CalendarScreen() {
           >
             {content}
           </LinearGradient>
-        </TouchableOpacity>
+        </ScaleButton>
       );
     }
 
@@ -186,7 +188,7 @@ export default function CalendarScreen() {
       const primaryDotColor = marking?.dots?.[0]?.color || colors.primary;
       
       return (
-        <TouchableOpacity onPress={() => handleDayPress(date)} activeOpacity={0.7}>
+        <ScaleButton onPress={() => handleDayPress(date)}>
           <LinearGradient
             // Make it more colorful/glazed by using the category color with transparency
             // or a brighter glass gradient
@@ -197,19 +199,17 @@ export default function CalendarScreen() {
           >
             {content}
           </LinearGradient>
-        </TouchableOpacity>
+        </ScaleButton>
       );
     }
 
     return (
-      <TouchableOpacity 
+      <ScaleButton 
         onPress={() => handleDayPress(date)} 
-        activeOpacity={0.7}
-        disabled={isDisabled}
         style={styles.dayContainer}
       >
         {content}
-      </TouchableOpacity>
+      </ScaleButton>
     );
   };
 
@@ -221,26 +221,11 @@ export default function CalendarScreen() {
           <Text style={styles.eyebrow}>REM</Text>
           <View>
             <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>{t('tab_calendar')}</Text>
-            <Svg
-                height="8"
-                width="100%"
-                viewBox="0 0 100 10"
-                preserveAspectRatio="none"
-                style={styles.titleUnderline}
-            >
-                <Path
-                    d="M0 5 Q50 10 100 5"
-                    stroke={colors.primaryLight}
-                    strokeWidth="3"
-                    fill="none"
-                />
-            </Svg>
+            <WavyUnderline />
           </View>
         </View>
-        <TouchableOpacity 
-          style={styles.profileButton}
+        <ScaleButton 
           onPress={() => router.push('/add')}
-          activeOpacity={0.7}
         >
              <LinearGradient
                 colors={[colors.secondary, colors.primary]}
@@ -250,7 +235,7 @@ export default function CalendarScreen() {
             >
               <FontAwesome name="plus" size={20} color={colors.text} />
             </LinearGradient>
-        </TouchableOpacity>
+        </ScaleButton>
       </View>
       
       <Calendar
