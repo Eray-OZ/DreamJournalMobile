@@ -239,10 +239,17 @@ export default function CalendarScreen() {
         </View>
         <TouchableOpacity 
           style={styles.profileButton}
-          onPress={() => router.push('/(tabs)/profile')}
+          onPress={() => router.push('/add')}
           activeOpacity={0.7}
         >
-          <FontAwesome name="user-circle" size={28} color={colors.primaryLight} />
+             <LinearGradient
+                colors={[colors.secondary, colors.primary]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 0 }}
+                style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <FontAwesome name="plus" size={20} color={colors.text} />
+            </LinearGradient>
         </TouchableOpacity>
       </View>
       

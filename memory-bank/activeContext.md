@@ -2,34 +2,43 @@
 
 ## Current Status
 
-✅ **Visual System Overhaul** - Consistent typography (Serif Headers), Deep Nebula Palette, and Uniform UI elements.
-✅ **Swipe to Delete** - Fully implemented across "My Dreams" and "Calendar".
-✅ **Dream Visualization** - Active via Pollinations.ai.
+✅ **Dream Statistics** - New "Stats" tab with category distribution Pie Chart and custom legend.
+✅ **Navigation Swap** - "Add Dream" moved to Header; "Profile" moved to Tab Bar.
+✅ **Distinct Palette** - Fully synchronized vivid colors across all pages (Fear=Red, Family=Green, Work=Amber, Past=Violet, etc.).
+✅ **Visual System** - Consistent Serif headers and SVG wavy underlines.
 
 ## Recent Changes (Dec 31, 2024)
 
-### Visual Polish & Consistency 🎨
+### Dream Statistics 📊
 
-- **Headers:** Unified "Dreams", "Calendar", "Profile" with Serif font (`Georgia`/`serif`), `primaryLight` accent, and SVG wavy underline.
-- **List Styling:**
-  - **Uniformity:** Enforced consistent colors for Date (Gray) and Icon Background (Deep Violet `#2E1065`) across all categories.
-  - **Category Badges:** Tinted `primaryLight` background with matching text for clean integration.
-  - **Minimalism:** Removed emoji icons from list cards (text/badge only).
-- **Theme Palette:** Updated category gradients to strictly match "Deep Nebula" (Purples, Pinks, Indigos).
+- Created `app/(tabs)/stats.jsx` using `react-native-gifted-charts`.
+- Features summary cards and a category breakdown pie chart.
+- Implemented a vertical legend below the chart for better readability (Index icon, Label, Count).
 
-### Swipe to Delete 🧹
+### Navigation & Layout Swaps 🔄
 
-- Shared `SwipeableDreamItem` component.
-- Integrated into `CalendarScreen` & `DreamListScreen`.
+- **Add Action**: Moved from the central FAB to the top-right header on all main screens (Dreams, Calendar, Stats). Uses a primary/secondary gradient circle icon.
+- **Profile**: Moved from the header to the navigation tab bar (far right).
+- **Consolidated Tabs**: Reordered to `Dreams | Stats | Calendar | Profile`.
+
+### Color & UI refinement 🎨
+
+- **Vivid & Distinct Palette**:
+  - `fear`: Red (`#EF4444`)
+  - `family`: Green (`#10B981`)
+  - `work`: Amber (`#D97706`)
+  - `past`: Violet (`#8B5CF6`)
+  - `other`: Teal (`#14B8A6`)
+- **Bug Fixes**: Resolved `ReferenceError` for missing imports in `stats.jsx` and structural syntax errors in `index.tsx`.
 
 ## Design System Notes
 
-- **Headers:** Always use Serif font for main page titles. Accent color: `primaryLight`.
-- **Lists:** Keep metadata neutral (`textSecondary`). Use `primaryDark` (Deep Violet) for iconic backgrounds.
-- **Theme:** Stick to Purple/Pink/Blue spectrum. Avoid generic Red/Green.
+- **Headers**: Always use `Serif` font and `primaryLight` accent for titles with the wavy SVG underline.
+- **Actions**: Floating "Add" action is now header-right.
+- **Colors**: Maintain the "Distinct Palette" defined in `constants/categories.js` to ensure the list and calendar match.
 
 ## Next Steps
 
-1. [ ] Dream statistics.
-2. [ ] Google Sign-In.
-3. [ ] Improve image quality/speed.
+1. [ ] Dream Editing and detail view polish.
+2. [ ] Image generation quality/speed improvements.
+3. [ ] Advanced data filters (filter stats by date range).

@@ -71,22 +71,21 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add"
+        name="stats"
         options={{
-          title: '',
-          tabBarLabelStyle: { display: 'none' }, // Hide label for FAB
-          tabBarIcon: () => (
-            <View style={styles.fabContainer}>
-              <LinearGradient
-                colors={[colors.secondary, colors.primaryDark, colors.primary]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.fab}
-              >
-                <FontAwesome name="plus" size={28} color="#fff" />
-              </LinearGradient>
+          title: 'Stats',
+          tabBarIcon: ({ color, focused }) => (
+            <View style={styles.iconContainer}>
+              {focused && <View style={styles.activeIndicator} />}
+              <FontAwesome name="pie-chart" size={24} color={color} />
             </View>
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="add"
+        options={{
+          href: null, // Hide from tab bar (moved to header)
         }}
       />
       <Tabs.Screen
@@ -104,7 +103,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          href: null, // Hide from tab bar
+          title: t('tab_profile'),
+          tabBarIcon: ({ color, focused }) => (
+            <View style={styles.iconContainer}>
+              {focused && <View style={styles.activeIndicator} />}
+              <FontAwesome name="user-o" size={24} color={color} />
+            </View>
+          ),
         }}
       />
     </Tabs>

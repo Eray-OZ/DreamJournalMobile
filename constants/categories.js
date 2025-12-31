@@ -13,13 +13,13 @@ export const CATEGORIES = [
 
 // Category colors for calendar dots
 export const CATEGORY_COLORS = {
-  fear: '#EF4444',
-  relationship: '#EC4899',
-  work: '#8B5CF6',
-  family: '#10B981',
-  past: '#6366F1',
-  future: '#06B6D4',
-  other: '#6B7280',
+  fear: '#EF4444',       // Red
+  relationship: '#EC4899', // Pink
+  work: '#D97706',       // Amber
+  family: '#10B981',     // Green
+  past: '#8B5CF6',       // Violet (Distinct)
+  future: '#06B6D4',     // Cyan
+  other: '#14B8A6',      // Teal (Distinct)
 };
 
 // Get category by id

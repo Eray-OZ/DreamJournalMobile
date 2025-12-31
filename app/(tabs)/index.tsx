@@ -59,11 +59,14 @@ export default function DreamListScreen() {
   const getGradientColors = (categoryId: string): [string, string] => {
     switch (categoryId) {
       // Deep Nebula Theme Palette (Purples, Pinks, Blues)
-      case 'fear': return ['#4C1D95', '#BE185D']; // Deep Violet to Pink (Intense)
-      case 'relationship': return ['#EC4899', '#DB2777']; // Pink (Secondary Color)
-      case 'work': return ['#8B5CF6', '#7C3AED']; // Violet (Primary Color)
-      case 'adventure': return ['#06B6D4', '#3B82F6']; // Cyan to Blue (Electric)
-      default: return ['#6366F1', '#4F46E5']; // Indigo
+      case 'fear': return ['#EF4444', '#DC2626']; // Red (Restored)
+      case 'relationship': return ['#EC4899', '#DB2777']; // Pink
+      case 'work': return ['#D97706', '#B45309']; // Amber
+      case 'family': return ['#10B981', '#059669']; // Green (Restored)
+      case 'past': return ['#8B5CF6', '#7C3AED']; // Violet (Distinct)
+      case 'future': return ['#06B6D4', '#0891B2']; // Cyan
+      case 'other': return ['#14B8A6', '#0D9488']; // Teal (Distinct)
+      default: return ['#6366F1', '#4F46E5']; // Indigo (Default)
     }
   };
 
@@ -194,14 +197,21 @@ export default function DreamListScreen() {
                 </View>
 
             </View>
-        </View>
-        <TouchableOpacity 
-          style={styles.profileButton}
-          onPress={() => router.push('/(tabs)/profile')}
-          activeOpacity={0.7}
-        >
-          <FontAwesome name="user-circle" size={28} color={colors.primaryLight} />
-        </TouchableOpacity>
+          </View>
+          
+          <TouchableOpacity 
+            style={styles.profileButton}
+            onPress={() => router.push('/add')}
+          >
+             <LinearGradient
+                colors={[colors.secondary, colors.primary]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 0 }}
+                style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <FontAwesome name="plus" size={20} color={colors.text} />
+            </LinearGradient>
+          </TouchableOpacity>
       </View>
 
       <View style={styles.searchSection}>
@@ -262,7 +272,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   eyebrow: {
     color: colors.primaryLight,
@@ -286,8 +296,8 @@ const styles = StyleSheet.create({
   },
 
   profileButton: {
-    padding: 8,
-    marginBottom: 4,
+    padding: 0,
+    marginBottom: 0,
   },
 
 
