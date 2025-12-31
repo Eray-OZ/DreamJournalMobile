@@ -34,6 +34,8 @@ export default {
   tab_dreams: 'Rüyalarım',
   tab_add: 'Rüya Ekle',
   tab_profile: 'Profil',
+  tab_calendar: 'Takvim',
+  no_dreams_on_day: 'Bu günde rüya yok',
   
   // Dream List
   search_placeholder: 'Rüya ara...',

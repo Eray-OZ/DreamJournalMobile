@@ -27,7 +27,7 @@ export const useDreamStore = create((set, get) => ({
   },
 
   // Add new dream with AI analysis
-  addDream: async (userId, title, content, category, language = 'tr') => {
+  addDream: async (userId, title, content, category, language = 'tr', dreamDate = null) => {
     set({ isLoading: true, error: null });
 
     try {
@@ -42,12 +42,13 @@ export const useDreamStore = create((set, get) => ({
       // Determine fallback text based on language
       const fallbackAnalysis = language === 'tr' ? 'Analiz yapılamadı' : 'Analysis could not be performed';
 
-      // Save to Firestore with user-selected category
+      // Save to Firestore with user-selected category and date
       const dreamData = {
         title,
         content,
         analysis: analysis || fallbackAnalysis,
         category: category || 'other',
+        dreamDate, // Will be null if not provided, service handles this
       };
 
       const { id, error } = await dreamService.addDream(userId, dreamData);

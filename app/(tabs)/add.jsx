@@ -4,6 +4,7 @@ import {
     ActivityIndicator,
     Alert,
     KeyboardAvoidingView,
+    Modal,
     Platform,
     ScrollView,
     StyleSheet,
@@ -12,6 +13,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { Calendar } from 'react-native-calendars';
 import { CATEGORIES } from '../../constants/categories';
 import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
@@ -22,11 +24,23 @@ export default function AddDreamScreen() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('other');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Today's date
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const { user } = useAuthStore();
   const { addDream, isLoading } = useDreamStore();
   const { t, language } = useTranslation();
 
   const selectableCategories = CATEGORIES.filter(c => c.id !== 'all');
+
+  const formatDisplayDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
 
   const handleSubmit = async () => {
     if (!title.trim()) {
@@ -44,13 +58,21 @@ export default function AddDreamScreen() {
       return;
     }
 
-    const { id, error } = await addDream(user.uid, title.trim(), content.trim(), selectedCategory, language);
+    const { id, error } = await addDream(
+      user.uid, 
+      title.trim(), 
+      content.trim(), 
+      selectedCategory, 
+      language,
+      selectedDate
+    );
 
     if (id) {
       // Reset form
       setTitle('');
       setContent('');
       setSelectedCategory('other');
+      setSelectedDate(new Date().toISOString().split('T')[0]);
       // Navigate directly to the new dream's detail page
       router.push(`/dream/${id}`);
     } else if (error) {
@@ -69,7 +91,7 @@ export default function AddDreamScreen() {
       >
         <View style={styles.header}>
           <Text style={styles.emoji}>✨</Text>
-          <Text style={styles.title}>{t('new_dream')}</Text>
+          <Text style={styles.headerTitle}>{t('new_dream')}</Text>
           <Text style={styles.subtitle}>{t('add_dream_subtitle')}</Text>
         </View>
 
@@ -84,6 +106,19 @@ export default function AddDreamScreen() {
               onChangeText={setTitle}
               maxLength={100}
             />
+          </View>
+
+          {/* Date Picker */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>{language === 'tr' ? 'Tarih' : 'Date'}</Text>
+            <TouchableOpacity 
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.dateIcon}>📅</Text>
+              <Text style={styles.dateText}>{formatDisplayDate(selectedDate)}</Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.inputGroup}>
@@ -152,6 +187,49 @@ export default function AddDreamScreen() {
           <Text style={styles.tipText}>• {t('tip_3')}</Text>
         </View>
       </ScrollView>
+
+      {/* Date Picker Modal */}
+      <Modal
+        visible={showDatePicker}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowDatePicker(false)}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay} 
+          activeOpacity={1}
+          onPress={() => setShowDatePicker(false)}
+        >
+          <View style={styles.modalContent}>
+            <Calendar
+              current={selectedDate}
+              markedDates={{
+                [selectedDate]: { selected: true, selectedColor: colors.primary }
+              }}
+              onDayPress={(day) => {
+                setSelectedDate(day.dateString);
+                setShowDatePicker(false);
+              }}
+              maxDate={new Date().toISOString().split('T')[0]} // Can't select future dates
+              theme={{
+                calendarBackground: colors.cardBg,
+                textSectionTitleColor: colors.textSecondary,
+                selectedDayBackgroundColor: colors.primary,
+                selectedDayTextColor: '#fff',
+                todayTextColor: colors.secondary,
+                dayTextColor: colors.text,
+                textDisabledColor: colors.textMuted,
+                monthTextColor: colors.text,
+                arrowColor: colors.primary,
+                textDayFontWeight: '600',
+                textMonthFontWeight: '800',
+                textDayHeaderFontWeight: '600',
+              }}
+              style={styles.modalCalendar}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -173,7 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 56,
     marginBottom: 16,
   },
-  title: {
+  headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
     color: colors.primary,
@@ -203,6 +281,24 @@ const styles = StyleSheet.create({
     color: colors.text,
     borderWidth: 1,
     borderColor: colors.border,
+  },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.inputBg,
+    borderRadius: borderRadius.xl,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  dateIcon: {
+    fontSize: 20,
+    marginRight: 12,
+  },
+  dateText: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: '500',
   },
   categoryGrid: {
     flexDirection: 'row',
@@ -290,5 +386,23 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginBottom: 6,
     lineHeight: 20,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: 400,
+  },
+  modalCalendar: {
+    borderRadius: borderRadius.xl,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
   },
 });

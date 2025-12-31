@@ -8,6 +8,7 @@ import {
     orderBy,
     query,
     serverTimestamp,
+    Timestamp,
     updateDoc,
     where,
 } from 'firebase/firestore';
@@ -24,9 +25,18 @@ const getUserDreamsRef = (userId) => {
 export const addDream = async (userId, dreamData) => {
   try {
     const dreamsRef = getUserDreamsRef(userId);
+    
+    // Use provided dreamDate or server timestamp
+    const createdAt = dreamData.dreamDate 
+      ? Timestamp.fromDate(new Date(dreamData.dreamDate))
+      : serverTimestamp();
+    
+    // Remove dreamDate from data to avoid storing it separately
+    const { dreamDate, ...dataWithoutDreamDate } = dreamData;
+    
     const docRef = await addDoc(dreamsRef, {
-      ...dreamData,
-      createdAt: serverTimestamp(),
+      ...dataWithoutDreamDate,
+      createdAt,
       updatedAt: serverTimestamp(),
     });
     return { id: docRef.id, error: null };

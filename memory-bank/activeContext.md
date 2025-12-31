@@ -2,42 +2,35 @@
 
 ## Current Status
 
-✅ **UI Revamp Complete** - Deep Nebula glassmorphic design implemented.
-✅ **Localization Complete** - AI prompts respond to app language (TR/EN).
-✅ **UX Improved** - Direct navigation to dream detail after creation.
+✅ **Calendar View Added** - Dreams shown by date with category-colored dots.
+✅ **Date Selection** - Users can select a date when adding dreams (defaults to today).
 
-## Recent Changes (Dec 31, 2024 - Session 2)
+## Recent Changes (Dec 31, 2024)
 
-### UI/UX
+### Date Selection for Dreams
 
-1. **Theme**: Deep Nebula Purple (`#0F0720`) with violet/pink gradients.
-2. **Tab Bar**: Floating glass tab bar with gradient FAB.
-3. **Home Screen**: Minimalist header, glassmorphic cards, pill search.
-4. **Dream Detail**: Clean header (Title → Date → Category), gradient AI Analysis border.
-5. **Post-Creation Flow**: Removed success alert, direct navigation to new dream.
+- Updated `dream.service.js` to accept optional `dreamDate` using Firestore `Timestamp`
+- Updated `dreamStore.js` to pass date parameter
+- Added date picker button and calendar modal to `add.jsx`
+- Future dates are disabled
 
-### Code Changes
+### Calendar Feature
 
-- `constants/theme.js`: New color palette and glassmorphism tokens.
-- `app/_layout.tsx`: Global theme colors.
-- `app/(tabs)/_layout.tsx`: Glass tab bar with BlurView + LinearGradient FAB.
-- `app/(tabs)/index.tsx`: Redesigned dream list and header.
-- `app/(tabs)/add.jsx`: Passes language to AI, navigates to dream detail on success.
-- `app/dream/[id].jsx`: Refined header layout.
-- `services/ai.service.js`: Localized prompts (TR/EN), removed unused category prompt.
-- `store/dreamStore.js`: `addDream` accepts language parameter.
+- `app/(tabs)/calendar.jsx` with category-colored dots
+- Day selection to view dreams
+- Tab navigation: Dreams → Calendar → Add → Profile
 
-### Dependencies Added
+### Previous
 
-- `expo-linear-gradient`
-- `expo-blur`
+- Deep Nebula glassmorphic theme
+- Localized AI prompts (TR/EN)
+
+## Dependencies
+
+`expo-router`, `zustand`, `firebase`, `expo-linear-gradient`, `expo-blur`, `react-native-calendars`
 
 ## Next Steps
 
-1. [ ] Test Google Sign-In
-2. [ ] Dream editing feature
-3. [ ] Pull-to-refresh refinement
-
-## Known Issues
-
-- None.
+1. [ ] Dream editing
+2. [ ] Google Sign-In
+3. [ ] Dream statistics

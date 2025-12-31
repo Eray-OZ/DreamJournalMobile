@@ -34,6 +34,8 @@ export default {
   tab_dreams: 'My Dreams',
   tab_add: 'Add Dream',
   tab_profile: 'Profile',
+  tab_calendar: 'Calendar',
+  no_dreams_on_day: 'No dreams on this day',
   
   // Dream List
   search_placeholder: 'Search dreams...',
