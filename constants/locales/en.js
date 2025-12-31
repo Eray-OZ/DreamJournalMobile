@@ -36,7 +36,22 @@ export default {
   tab_profile: 'Profile',
   tab_calendar: 'Calendar',
   tab_stats: 'Stats',
+  tab_dictionary: 'Dictionary',
   no_dreams_on_day: 'No dreams on this day',
+  
+  // Dictionary
+  dictionary_title: 'Dictionary',
+  dictionary_subtitle: 'Explore dream symbols',
+  search_symbols: 'Search symbols...',
+  search_results: 'Results',
+  symbols: 'symbols',
+  no_symbols_found: 'No symbols found',
+  freudian_view: 'Freudian',
+  jungian_view: 'Jungian',
+  freudian_interpretation: 'Freudian Interpretation',
+  jungian_interpretation: 'Jungian Interpretation',
+  variations: 'Related Symbols',
+  source_freud: 'Source: The Interpretation of Dreams (1899)',
   
   // Stats
   total_dreams: 'Total Dreams',
