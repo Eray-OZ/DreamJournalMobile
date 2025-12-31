@@ -83,6 +83,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="dictionary"
+        options={{
+          title: t('tab_dictionary'),
+          tabBarIcon: ({ color, focused }) => (
+            <View style={styles.iconContainer}>
+              {focused && <View style={styles.activeIndicator} />}
+              <FontAwesome name="book" size={24} color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="add"
         options={{
           href: null, // Hide from tab bar (moved to header)

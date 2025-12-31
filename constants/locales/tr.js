@@ -36,7 +36,22 @@ export default {
   tab_profile: 'Profil',
   tab_calendar: 'Takvim',
   tab_stats: 'İstatistik',
+  tab_dictionary: 'Sözlük',
   no_dreams_on_day: 'Bu günde rüya yok',
+  
+  // Dictionary
+  dictionary_title: 'Sözlük',
+  dictionary_subtitle: 'Rüya sembollerini keşfedin',
+  search_symbols: 'Sembol ara...',
+  search_results: 'Sonuçlar',
+  symbols: 'sembol',
+  no_symbols_found: 'Sembol bulunamadı',
+  freudian_view: 'Freudyen',
+  jungian_view: 'Jungçu',
+  freudian_interpretation: 'Freudyen Yorum',
+  jungian_interpretation: 'Jungçu Yorum',
+  variations: 'İlgili Semboller',
+  source_freud: 'Kaynak: Düşlerin Yorumu (1899)',
   
   // Stats
   total_dreams: 'Toplam Rüya',
