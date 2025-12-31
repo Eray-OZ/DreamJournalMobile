@@ -35,27 +35,20 @@ export default function StatsScreen() {
       const category = CATEGORIES.find(c => c.id === catId);
       const color = CATEGORY_COLORS[catId] || CATEGORY_COLORS.other;
       
+      return {
         value: count,
-        color: color, // Use vivid category color
-        text: '', // Removed emoji from chart
-        category: category, // Store for Legend
-        // Gradient props if supported or just solid
+        color: color,
+        category: category, 
         gradientCenterColor: color,
         focused: true,
       };
     }).sort((a, b) => b.value - a.value); // Sort by biggest slice
   }, [dreams]);
 
-
-
   // 4. Most Active
   const topCategory = useMemo(() => {
       if (pieData.length === 0) return null;
-      const topItem = pieData[0]; // Already sorted
-      const cat = CATEGORIES.find(c => CATEGORY_COLORS[c.id] === topItem.color || (CATEGORY_COLORS[c.id] && c.icon === topItem.text));
-      // Reverse lookup is tricky, better to store ID in pieData? 
-      // Let's re-find by matching icon since we stored icon in text
-      return CATEGORIES.find(c => c.icon === topItem.text);
+      return pieData[0]?.category;
   }, [pieData]);
 
 
@@ -101,35 +94,35 @@ export default function StatsScreen() {
 
       {/* PIE CHART SECTION */}
       <View style={styles.chartContainer}>
-          <Text style={styles.sectionTitle}>Distribution</Text>
           <View style={{ alignItems: 'center', paddingVertical: 20 }}>
             {pieData.length > 0 ? (
                 <PieChart
                     data={pieData}
-                    donut
-                    showText
-                    textColor="white"
+                    donut={false}
+                    innerRadius={0}
+                    showText={false}
                     radius={120}
-                    textSize={20}
-                    innerRadius={70}
-                    innerCircleColor={colors.background}
-                    centerLabelComponent={() => {
-                        return (
-                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ fontSize: 28, color: 'white', fontWeight: 'bold' }}>{totalDreams}</Text>
-                                <Text style={{ fontSize: 12, color: colors.textSecondary }}>Dreams</Text>
-                            </View>
-                        );
-                    }}
+                    centerLabelComponent={() => null}
                 />
             ) : (
                 <Text style={{ color: colors.textSecondary }}>No data yet</Text>
             )}
           </View>
+
+          {/* LEGEND SECTION */}
+          <View style={styles.legendContainer}>
+            {pieData.map((item, index) => (
+                <View key={index} style={styles.legendItem}>
+                    <View style={[styles.legendDot, { backgroundColor: item.color }]} />
+                    <Text style={styles.legendIcon}>{item.category?.icon}</Text>
+                    <Text style={styles.legendText}>
+                        {t(item.category?.labelKey || 'cat_other')}
+                    </Text>
+                    <Text style={styles.legendCount}>{item.value}</Text>
+                </View>
+            ))}
+          </View>
       </View>
-
-      {/* BAR CHART SECTION */}
-
 
     </ScrollView>
   );
