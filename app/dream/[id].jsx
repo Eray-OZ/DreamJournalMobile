@@ -1,5 +1,5 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     ActivityIndicator,
     Alert,
@@ -18,17 +18,21 @@ import { useTranslation } from '../../store/languageStore';
 export default function DreamDetailScreen() {
   const { id } = useLocalSearchParams();
   const { user } = useAuthStore();
-  const { currentDream, fetchDreamById, deleteDream, isLoading, clearCurrentDream } = useDreamStore();
+  const { currentDream, fetchDreamById, deleteDream, isLoading, clearCurrentDream, dreams } = useDreamStore();
   const { t, language } = useTranslation();
+
+  // Try to get dream from cached list first to avoid flashing
+  const cachedDream = useMemo(() => {
+    return dreams.find(d => d.id === id);
+  }, [dreams, id]);
+
+  // Use cached dream or fetched currentDream
+  const dream = currentDream || cachedDream;
 
   useEffect(() => {
     if (user?.uid && id) {
       fetchDreamById(user.uid, id);
     }
-
-    return () => {
-      clearCurrentDream();
-    };
   }, [user?.uid, id]);
 
   const handleDelete = () => {
@@ -53,7 +57,8 @@ export default function DreamDetailScreen() {
     );
   };
 
-  if (isLoading) {
+  // Only show loading if we have no dream data at all
+  if (isLoading && !dream) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.primary} />
@@ -61,7 +66,7 @@ export default function DreamDetailScreen() {
     );
   }
 
-  if (!currentDream) {
+  if (!dream) {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{t('dream_not_found')}</Text>
@@ -69,7 +74,7 @@ export default function DreamDetailScreen() {
     );
   }
 
-  const categoryLabel = t(CATEGORIES.find(c => c.id === currentDream.category)?.labelKey || 'cat_other');
+  const categoryLabel = t(CATEGORIES.find(c => c.id === dream.category)?.labelKey || 'cat_other');
 
   return (
     <>
@@ -78,16 +83,17 @@ export default function DreamDetailScreen() {
           title: '',
           headerStyle: { backgroundColor: colors.background },
           headerTintColor: colors.text,
+          contentStyle: { backgroundColor: colors.background },
         }}
       />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>{currentDream.title}</Text>
+          <Text style={styles.title}>{dream.title}</Text>
           <View style={styles.categoryBadge}>
             <Text style={styles.categoryText}>{categoryLabel}</Text>
           </View>
           <Text style={styles.date}>
-            {currentDream.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+            {dream.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -98,14 +104,14 @@ export default function DreamDetailScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>📝 {t('dream')}</Text>
           <View style={styles.card}>
-            <Text style={styles.dreamContent}>{currentDream.content}</Text>
+            <Text style={styles.dreamContent}>{dream.content}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>🔮 {t('ai_analysis')}</Text>
           <View style={[styles.card, styles.analysisCard]}>
-            <Text style={styles.analysisText}>{currentDream.analysis}</Text>
+            <Text style={styles.analysisText}>{dream.analysis}</Text>
           </View>
         </View>
 

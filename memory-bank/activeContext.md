@@ -2,45 +2,49 @@
 
 ## Current Status
 
-✅ **Teal design implemented** - New visual theme matching design.js reference.
+✅ **Firebase configured and running** - App connected to Firebase project.
 
-## Recent Changes (Latest Session)
+## Recent Changes (Latest Session - Dec 31, 2024)
 
-1. Added multi-language support (Turkish + English)
-2. Implemented teal color scheme from design.js
-3. Added glassmorphism card design with icon badges
-4. Created floating add button in tab bar
-5. Added language switcher in profile
+1. Created `.env` file with Firebase credentials
+2. Fixed navigation white flash issue (native `app.json` backgrounds)
+3. Added proper status bar spacing on My Dreams screen
+4. Simplified Dream Detail layout:
+   - Removed category icon
+   - Show category name as plain text under title
+   - Removed "Dream Detail" header title
+   - Removed category badge background
+5. Fixed screen animations to prevent white flash during navigation
+6. Added `freezeOnBlur` to Stack navigator
 
 ## Active Decisions
 
-- Using **Zustand** for state management (per user preference)
-- Using **Expo Router** for navigation (per user preference)
+- Using **Zustand** for state management
+- Using **Expo Router** for navigation
 - Dark theme with purple accent (#6c5ce7)
-- Turkish language for UI
+- Native backgrounds set to dark (#0a0a1a) to prevent white flash
+- Screen animation set to `none` for instant transitions
 
 ## Current Work Focus
 
-🔧 **Awaiting Firebase Setup** - User needs to:
-
-1. Create Firebase project
-2. Enable Auth providers
-3. Set up Firestore
-4. Add environment variables
+🎨 **UI Polish Complete** - Navigation and styling issues resolved.
 
 ## Next Steps
 
-1. [ ] User: Create Firebase project and configure `.env`
-2. [ ] Add Google Sign-In implementation (expo-auth-session)
-3. [ ] Test full flow on iOS/Android simulators
-4. [ ] Polish: loading states, error boundaries
+1. [ ] Add Google Sign-In implementation (expo-auth-session)
+2. [ ] Test full flow on iOS/Android simulators
+3. [ ] Add pull-to-refresh functionality
+4. [ ] Dream editing feature
+5. [ ] Statistics/analytics screen
 
 ## Known Issues
 
 - Google Sign-In shows placeholder alert (needs expo-auth-session config)
-- TypeScript lint warning in index.tsx (renderItem implicit 'any')
 
 ## Blockers
 
-- Firebase credentials required to test authentication
-- Gemini API key required to test dream analysis
+- None currently - Firebase and Gemini configured
+
+## Key Technical Fixes (Reference)
+
+**White Flash Fix:** The navigation white flash was caused by native background colors in `app.json` being set to white. Fixed by setting all backgrounds in splash, iOS, and Android config to `#0a0a1a`.

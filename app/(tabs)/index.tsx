@@ -147,6 +147,7 @@ export default function DreamListScreen() {
           data={filteredDreams}
           keyExtractor={(item) => item.id}
           renderItem={renderDreamCard}
+          style={{ backgroundColor: colors.background }}
           contentContainerStyle={styles.listContainer}
           refreshControl={
             <RefreshControl
@@ -236,12 +237,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.background,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
+    backgroundColor: colors.background,
   },
   emptyIcon: {
     fontSize: 64,
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 24,
+    backgroundColor: colors.background,
   },
   dreamCard: {
     backgroundColor: colors.cardBg,

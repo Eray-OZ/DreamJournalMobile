@@ -10,6 +10,7 @@
 - [x] Auth state persistence (AsyncStorage)
 - [x] Protected routes (auto-redirect)
 - [x] Sign out functionality
+- [x] Firebase configuration (`.env` created)
 
 ### Dream Features
 
@@ -17,7 +18,7 @@
 - [x] Add dream screen with form
 - [x] Gemini API integration for analysis
 - [x] Automatic categorization
-- [x] Dream detail screen
+- [x] Dream detail screen (simplified layout)
 - [x] Delete dream functionality
 - [x] Search by title/content
 - [x] Filter by category
@@ -29,25 +30,27 @@
 - [x] Loading states
 - [x] Empty states
 - [x] Error alerts
+- [x] Proper status bar spacing
+- [x] No white flash on navigation (native backgrounds fixed)
+- [x] Category shown as text under dream title
 
 ### Infrastructure
 
 - [x] Firebase config with offline persistence
 - [x] Zustand stores (auth + dreams)
 - [x] Service layer architecture
-- [x] Environment variable template
+- [x] Environment variables configured
+- [x] Native backgrounds set to dark theme
 
 ## What's Pending 🔧
 
 ### High Priority
 
-- [ ] Firebase project setup (user action)
-- [ ] Environment variables configuration
 - [ ] Google Sign-In with expo-auth-session
+- [ ] Pull-to-refresh on dream list
 
 ### Medium Priority
 
-- [ ] Pull-to-refresh (partially done)
 - [ ] Dream editing
 - [ ] Onboarding/welcome screen
 
@@ -78,10 +81,17 @@
 - Built all core screens
 - Tested dev server startup
 
+### Session 4 (Dec 31, 2024)
+
+- Added Firebase `.env` configuration
+- Fixed navigation white flash (app.json native backgrounds)
+- Added status bar spacing
+- Simplified Dream Detail UI (removed icon, text-only category)
+- Removed header titles for cleaner navigation
+
 ## Known Issues
 
 1. Google Sign-In shows placeholder (needs expo-auth-session)
-2. TypeScript implicit 'any' warning in index.tsx
 
 ## Metrics
 

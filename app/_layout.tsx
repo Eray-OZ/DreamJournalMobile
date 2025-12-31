@@ -83,10 +83,26 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <ThemeProvider value={CustomDarkTheme}>
-      <Stack>
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: '#0a0a1a' },
+          animation: 'none',
+          freezeOnBlur: true,
+        }}
+      >
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="dream/[id]" options={{ headerShown: true }} />
+        <Stack.Screen 
+          name="(tabs)" 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="dream/[id]" 
+          options={{ 
+            headerShown: true,
+          }} 
+        />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
